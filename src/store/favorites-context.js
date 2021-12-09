@@ -9,20 +9,18 @@ const FavoritesContext = createContext({
 });
 
 export const FavoritesProvider = ({ children }) => {
+  const API_HOST = "https://express-favorites.herokuapp.com";
   const [favorites, setFavorites] = useState([]);
 
   const addFavorite = async (book) => {
     const favorite = { book };
-    const response = await fetch(
-      "https://readalicious-favorites-default-rtdb.firebaseio.com/favorites.json",
-      {
-        method: "POST",
-        body: JSON.stringify(favorite),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_HOST}/favorites.json`, {
+      method: "POST",
+      body: JSON.stringify(favorite),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error("An HTTP error occurred.");
@@ -38,16 +36,13 @@ export const FavoritesProvider = ({ children }) => {
   const removeFavorite = async (book) => {
     const favorite = favorites.find((favorite) => favorite.book.id === book.id);
 
-    const response = await fetch(
-      `https://readalicious-favorites-default-rtdb.firebaseio.com/favorites/${favorite.id}.json`,
-      {
-        method: "DELETE",
-        body: JSON.stringify(favorite),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_HOST}/favorites/${favorite.id}.json`, {
+      method: "DELETE",
+      body: JSON.stringify(favorite),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error();
@@ -70,9 +65,7 @@ export const FavoritesProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const response = await fetch(
-        "https://readalicious-favorites-default-rtdb.firebaseio.com/favorites.json"
-      );
+      const response = await fetch(`${API_HOST}/favorites.json`);
 
       if (!response.ok) {
         throw new Error();

@@ -19,9 +19,8 @@ const BookSearch = () => {
 
   const getBooks = useCallback(
     async (search) => {
-      const API_HOST = "https://www.googleapis.com/books/v1";
-      const API_KEY = "AIzaSyA2yhd9cSyWlbran4-z_s5cMX7TrA2uMSI";
-
+      const API_HOST = "https://express-favorites.herokuapp.com/books";
+      const API_KEY = "Your Google Books API Key";
       try {
         setErrorMessage("");
 
@@ -32,8 +31,14 @@ const BookSearch = () => {
 
         setLoading(true);
 
+        // From original assignment directly to google books
+        // const response = await fetch(
+        //   `${API_HOST}/volumes?q=${search}&maxResults=15&key${API_KEY}`
+        // );
+
+        // Changed for back-end hosted express favorites app
         const response = await fetch(
-          `${API_HOST}/volumes?q=${search}&maxResults=15&key=${API_KEY}`
+          `${API_HOST}/volumes?q=${search}&maxResults=15`
         );
 
         if (!response.ok) {
